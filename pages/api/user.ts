@@ -1,7 +1,8 @@
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "~/lib/prisma";
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default withApiAuthRequired(async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     const result = await prisma.user.findMany();
     res.json(result);
@@ -14,4 +15,4 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     res.json(result);
   }
-}
+});

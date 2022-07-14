@@ -5,6 +5,7 @@ import SaveIcon from "@mui/icons-material/Create";
 
 import UserTable from "~/modules/User/components/UserTable";
 import Page from "~/components/Page";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const Home: NextPage = () => {
   return (
@@ -19,4 +20,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default withPageAuthRequired(Home);

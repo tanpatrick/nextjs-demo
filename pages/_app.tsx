@@ -9,6 +9,7 @@ import theme from "../src/theme";
 import createEmotionCache from "../src/createEmotionCache";
 import Layout from "~/components/Layout";
 import { useEffect } from "react";
+import { UserProvider } from "@auth0/nextjs-auth0";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -36,9 +37,11 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <UserProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </UserProvider>
       </ThemeProvider>
     </CacheProvider>
   );
