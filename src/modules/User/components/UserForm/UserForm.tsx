@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField } from "@mui/material";
-import Router from "next/router";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import Link from "next/link";
 
@@ -16,23 +16,38 @@ export default function UserForm(props: UserFormProps) {
   const [loading, setLoading] = useState(false);
   const formMode = props.mode || "new";
 
+  const { push, query } = useRouter();
+  useEffect(() => {
+    if (formMode === "edit") {
+      (async () => {
+        setLoading(true);
+
+        const response = await fetch(`/api/user/${query.id}`);
+        const json = await response.json();
+
+        setLastName(json.lastName);
+        setFirstName(json.firstName);
+        setEmail(json.email);
+
+        setLoading(false);
+      })();
+    }
+  }, [formMode, query]);
+
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (formMode === "edit") {
-      alert("Not yet implemented");
-      return;
-    }
+    const prefix = formMode == "edit" ? `/${query.id}` : "";
 
     try {
       setLoading(true);
       const body = { firstName, lastName, email };
-      await fetch(`/api/user`, {
+      await fetch(`/api/user${prefix}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push("/");
+      await push("/");
     } catch (error) {
       console.error(error);
     }
@@ -57,6 +72,7 @@ export default function UserForm(props: UserFormProps) {
         <CardContent>
           <div>
             <TextField
+              value={email}
               fullWidth
               label="Email"
               size="small"
@@ -67,6 +83,7 @@ export default function UserForm(props: UserFormProps) {
           </div>
           <div>
             <TextField
+              value={firstName}
               fullWidth
               label="First name"
               size="small"
@@ -76,6 +93,7 @@ export default function UserForm(props: UserFormProps) {
           </div>
           <div>
             <TextField
+              value={lastName}
               fullWidth
               label="Last name"
               size="small"
@@ -93,7 +111,7 @@ export default function UserForm(props: UserFormProps) {
             startIcon={<SaveIcon />}
             variant="contained"
           >
-            Save
+            {formMode == "edit" ? "Update" : "Save"}
           </LoadingButton>
           {!loading && (
             <Link href="/">

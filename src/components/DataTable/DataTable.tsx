@@ -15,7 +15,6 @@ export default function DataTable<T>(props: DataTableProps<T>) {
         columns={props.columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
       />
     </div>
   );
