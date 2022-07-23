@@ -1,9 +1,10 @@
-import * as React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import createEmotionServer from "@emotion/server/create-instance";
-import { ServerStyleSheets as JSSServerStyleSheets } from "@mui/styles";
-import theme from "../src/theme";
-import createEmotionCache from "../src/createEmotionCache";
+import createEmotionServer from '@emotion/server/create-instance';
+import { ServerStyleSheets as JSSServerStyleSheets } from '@mui/styles';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import * as React from 'react';
+
+import createEmotionCache from '../src/createEmotionCache';
+import theme from '../src/theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -35,11 +36,11 @@ export default class MyDocument extends Document {
 // It's using .browserslistrc
 let prefixer: any;
 let cleanCSS: any;
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   /* eslint-disable global-require */
-  const postcss = require("postcss");
-  const autoprefixer = require("autoprefixer");
-  const CleanCSS = require("clean-css");
+  const postcss = require('postcss');
+  const autoprefixer = require('autoprefixer');
+  const CleanCSS = require('clean-css');
   /* eslint-enable global-require */
 
   prefixer = postcss([autoprefixer]);
@@ -95,7 +96,7 @@ MyDocument.getInitialProps = async (ctx) => {
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
-      data-emotion={`${style.key} ${style.ids.join(" ")}`}
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
@@ -105,7 +106,7 @@ MyDocument.getInitialProps = async (ctx) => {
   // Generate the css string for the styles coming from jss
   let css = jssSheets.toString();
   // It might be undefined, e.g. after an error.
-  if (css && process.env.NODE_ENV === "production") {
+  if (css && process.env.NODE_ENV === 'production') {
     const result1 = await prefixer.process(css, { from: undefined });
     css = result1.css;
     css = cleanCSS.minify(css).styles;

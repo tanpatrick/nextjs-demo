@@ -1,11 +1,11 @@
-import { Button } from "@mui/material";
-import type { NextPage } from "next";
-import Link from "next/link";
-import SaveIcon from "@mui/icons-material/Create";
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import SaveIcon from '@mui/icons-material/Create';
+import { Button } from '@mui/material';
+import type { NextPage } from 'next';
+import Link from 'next/link';
 
-import UserTable from "~/modules/User/components/UserTable";
-import Page from "~/components/Page";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import Page from '~/components/Page';
+import UserTable from '~/modules/User/components/UserTable';
 
 const Home: NextPage = () => {
   return (

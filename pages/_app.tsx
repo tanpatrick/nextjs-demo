@@ -1,15 +1,15 @@
-import Head from "next/head";
-import { AppProps } from "next/app";
+import { UserProvider } from '@auth0/nextjs-auth0';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { useEffect } from 'react';
 
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
+import Layout from '~/components/Layout';
 
-import theme from "../src/theme";
-import createEmotionCache from "../src/createEmotionCache";
-import Layout from "~/components/Layout";
-import { useEffect } from "react";
-import { UserProvider } from "@auth0/nextjs-auth0";
+import createEmotionCache from '../src/createEmotionCache';
+import theme from '../src/theme';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -23,7 +23,7 @@ export default function MyApp(props: MyAppProps) {
 
   useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles?.parentElement?.removeChild(jssStyles);
     }

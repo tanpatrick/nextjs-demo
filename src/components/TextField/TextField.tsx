@@ -1,12 +1,13 @@
-import { TextField as MuiTextField } from "@mui/material";
-import { useEffect } from "react";
-import { Controller } from "react-hook-form";
-import { useForm } from "~/components/Form";
+import { TextField as MuiTextField } from '@mui/material';
+import { useEffect } from 'react';
+import { Controller } from 'react-hook-form';
+
+import { useForm } from '~/components/Form';
 
 interface TextFieldProps {
   label?: string;
   name: string;
-  type?: React.InputHTMLAttributes<unknown>["type"];
+  type?: React.InputHTMLAttributes<unknown>['type'];
   required?: boolean;
 }
 
@@ -15,7 +16,7 @@ export default function TextField(props: TextFieldProps) {
   const defaultValue = form?.initialValues && form?.initialValues[props.name];
 
   useEffect(() => {
-    form?.mode === "edit" && form?.setValue(props.name, defaultValue);
+    form?.mode === 'edit' && form?.setValue(props.name, defaultValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 

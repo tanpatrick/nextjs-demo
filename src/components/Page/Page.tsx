@@ -1,6 +1,7 @@
-import Head from "next/head";
-import { ReactNode } from "react";
-import Layout from "~/components/Layout";
+import Head from 'next/head';
+import { ReactNode } from 'react';
+
+import Layout from '~/components/Layout';
 
 type PageProps = {
   title: string;

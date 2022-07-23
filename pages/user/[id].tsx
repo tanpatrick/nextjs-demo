@@ -1,5 +1,5 @@
-import Page from "~/components/Page";
-import UserForm from "~/modules/User/components/UserForm";
+import Page from '~/components/Page';
+import UserForm from '~/modules/User/components/UserForm';
 
 const User = () => {
   return (

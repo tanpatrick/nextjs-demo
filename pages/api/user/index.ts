@@ -1,12 +1,13 @@
-import { withApiAuthRequired } from "@auth0/nextjs-auth0";
-import type { NextApiRequest, NextApiResponse } from "next";
-import prisma from "~/lib/prisma";
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+import prisma from '~/lib/prisma';
 
 export default withApiAuthRequired(async function handle(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
+  if (req.method === 'GET') {
     const result = await prisma.user.findMany({
       orderBy: {
-        id: "asc",
+        id: 'asc',
       },
     });
     res.json(result);

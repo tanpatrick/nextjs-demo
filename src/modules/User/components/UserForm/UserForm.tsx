@@ -1,8 +1,9 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import TextField from "~/components/TextField";
-import Form from "~/components/Form";
-import { FormMode } from "~/components/Form";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import Form from '~/components/Form';
+import { FormMode } from '~/components/Form';
+import TextField from '~/components/TextField';
 
 type UserFormProps = {
   mode?: FormMode;
@@ -15,12 +16,12 @@ interface User {
 }
 
 export default function UserForm(props: UserFormProps) {
-  const formMode = props.mode || "new";
+  const formMode = props.mode || 'new';
   const [user, setUser] = useState<User>();
 
   const { push, query } = useRouter();
   useEffect(() => {
-    if (formMode === "edit" && query.id) {
+    if (formMode === 'edit' && query.id) {
       (async () => {
         const response = await fetch(`/api/user/${query.id}`);
         setUser(await response.json());
@@ -29,27 +30,22 @@ export default function UserForm(props: UserFormProps) {
   }, [formMode, query]);
 
   const onSubmit = async (user: User) => {
-    const prefix = formMode == "edit" ? `/${query.id}` : "";
+    const prefix = formMode == 'edit' ? `/${query.id}` : '';
 
     try {
       await fetch(`/api/user${prefix}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),
       });
-      await push("/");
+      await push('/');
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <Form
-      mode={props.mode}
-      initialValues={user}
-      onSubmit={onSubmit}
-      title={`${formMode === "edit" ? "Update" : "New"} user`}
-    >
+    <Form mode={props.mode} initialValues={user} onSubmit={onSubmit} title={`${formMode === 'edit' ? 'Update' : 'New'} user`}>
       <div>
         <TextField label="Email" name="email" type="email" required />
       </div>

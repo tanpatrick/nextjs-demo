@@ -5,14 +5,18 @@ First, configure [`auth0`](https://auth0.com/docs/quickstart/webapp/nextjs/01-lo
 > `auth0` and `prisma` above are linked to their respective documentation on how to configure them.
 
 ### **prisma**
+
 Create `.env` in the root directory then add the following variables:
+
 ```bash
 DATABASE_URL=
 SHADOW_DATABASE_URL=
 ```
 
 ### **auth0**
+
 Create `.env.local` in the root directory then add the following variables:
+
 ```bash
 AUTH0_SECRET=
 AUTH0_BASE_URL=http://localhost:3000
@@ -23,16 +27,21 @@ AUTH0_POST_LOGOUT_REDIRECT=http://localhost:3000/logout
 ```
 
 Once done, proceed installing the application's packages and initialise database schema using prisma.
+
 ### Install packages
+
 ```bash
 yarn
 ```
+
 ### Initialise database schema using prisma
+
 ```bash
 yarn prisma:migrate
 ```
 
 ### Run application
+
 ```bash
 yarn run dev
 ```
