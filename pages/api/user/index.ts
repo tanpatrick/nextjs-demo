@@ -4,7 +4,11 @@ import prisma from "~/lib/prisma";
 
 export default withApiAuthRequired(async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const result = await prisma.user.findMany();
+    const result = await prisma.user.findMany({
+      orderBy: {
+        id: "asc",
+      },
+    });
     res.json(result);
   } else {
     const result = await prisma.user.create({

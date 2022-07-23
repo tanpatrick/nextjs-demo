@@ -1,51 +1,41 @@
-import { LoadingButton } from "@mui/lab";
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import SaveIcon from "@mui/icons-material/Save";
-import Link from "next/link";
+import TextField from "~/components/TextField";
+import Form from "~/components/Form";
+import { FormMode } from "~/components/Form";
 
 type UserFormProps = {
-  mode?: "new" | "edit";
+  mode?: FormMode;
 };
 
+interface User {
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 export default function UserForm(props: UserFormProps) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
   const formMode = props.mode || "new";
+  const [user, setUser] = useState<User>();
 
   const { push, query } = useRouter();
   useEffect(() => {
-    if (formMode === "edit") {
+    if (formMode === "edit" && query.id) {
       (async () => {
-        setLoading(true);
-
         const response = await fetch(`/api/user/${query.id}`);
-        const json = await response.json();
-
-        setLastName(json.lastName);
-        setFirstName(json.firstName);
-        setEmail(json.email);
-
-        setLoading(false);
+        setUser(await response.json());
       })();
     }
   }, [formMode, query]);
 
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (user: User) => {
     const prefix = formMode == "edit" ? `/${query.id}` : "";
 
     try {
-      setLoading(true);
-      const body = { firstName, lastName, email };
       await fetch(`/api/user${prefix}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(user),
       });
       await push("/");
     } catch (error) {
@@ -54,74 +44,21 @@ export default function UserForm(props: UserFormProps) {
   };
 
   return (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": { marginBottom: 2 },
-        "& .MuiButton-root": {
-          marginLeft: 1,
-          marginBottom: 2,
-        },
-      }}
-      autoComplete="off"
-      onSubmit={submitData}
+    <Form
+      mode={props.mode}
+      initialValues={user}
+      onSubmit={onSubmit}
+      title={`${formMode === "edit" ? "Update" : "New"} user`}
     >
-      <Card sx={{ maxWidth: 375, margin: "auto" }}>
-        <CardHeader title={`${formMode === "edit" ? "Edit" : "New"} user`} />
-        <Divider />
-        <CardContent>
-          <div>
-            <TextField
-              value={email}
-              fullWidth
-              label="Email"
-              size="small"
-              type="email"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              value={firstName}
-              fullWidth
-              label="First name"
-              size="small"
-              required
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              value={lastName}
-              fullWidth
-              label="Last name"
-              size="small"
-              required
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-        </CardContent>
-        <CardActions>
-          <LoadingButton
-            type="submit"
-            color="secondary"
-            loading={loading}
-            loadingPosition="start"
-            startIcon={<SaveIcon />}
-            variant="contained"
-          >
-            {formMode == "edit" ? "Update" : "Save"}
-          </LoadingButton>
-          {!loading && (
-            <Link href="/">
-              <Button href="#" color="info" size="medium" variant="outlined">
-                Cancel
-              </Button>
-            </Link>
-          )}
-        </CardActions>
-      </Card>
-    </Box>
+      <div>
+        <TextField label="Email" name="email" type="email" required />
+      </div>
+      <div>
+        <TextField label="First name" name="firstName" required />
+      </div>
+      <div>
+        <TextField label="Last name" name="lastName" required />
+      </div>
+    </Form>
   );
 }
