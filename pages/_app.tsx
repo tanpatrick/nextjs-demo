@@ -33,6 +33,11 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="theme-color" content="#317EFB" />
+        <link rel="manifest" href="/manifest.json" />
+        <link href="/icons/favicon-16x16.png" rel="icon" type="image/png" sizes="16x16" />
+        <link href="/icons/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-icon.png"></link>
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
